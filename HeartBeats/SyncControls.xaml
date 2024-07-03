@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="HeartBeats.SyncControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:utils="clr-namespace:HeartBeats.Utils"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <utils:BooleanConverter x:Key="BooleanConverter"/>
+        <utils:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+        <utils:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanVisibility"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.ColumnSpan="2" Text="Error monitoring will be performed along with automatic sync at provided intervals. For manual sync, monitoring is performed only on sync." Foreground="Red" FontSize="10" FontWeight="SemiBold" Margin="5, 10" TextWrapping="Wrap"/>
+        <RadioButton Grid.Row="1" x:Name="Manual" GroupName="SyncOption" Content="Manual" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Manual}" Checked="SyncOptionChecked"/>
+        <RadioButton Grid.Row="1" Grid.Column="1" x:Name="Automatic" GroupName="SyncOption" Content="Automatic" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Manual, Converter={StaticResource BooleanNegationConverter}}" Checked="SyncOptionChecked"/>
+        <ComboBox Grid.Row="2" ItemsSource="{Binding Intervals}"
+          SelectedValue="{Binding Interval}" Visibility="{Binding Manual, Converter={StaticResource InvertedBooleanVisibility}}"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,25 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HeartBeats.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ExcludedFolders" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Deleted Items;Outbox;Sent Items;Junk Email;Drafts;Conversation History;Conversation Action Settings;Quick Step Settings;Calendar;Contacts;Sync Issues;Files;Tasks;Yammer Root;PersonMetadata;Journal;ExternalContacts;Archive;Notes;RSS Feeds;EventCheckPoints;Social Activity Notifications
+</Value>
+    </Setting>
+    <Setting Name="ErrorCriticalThreshold" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="ErrorsTobeMonitored" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">NoOrderHistoryItemRecievedHoursQP;NoOrderHistoryItemRecievedHoursMG;PProductWithError</Value>
+    </Setting>
+    <Setting Name="DayLights" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="TimeZoneDifference" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">-05:00:00</Value>
+    </Setting>
+    <Setting Name="PlayNotificationSound" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

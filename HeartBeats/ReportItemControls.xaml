@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="HeartBeats.ReportItemControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:models="clr-namespace:HeartBeats.Models"
+             xmlns:utils="clr-namespace:HeartBeats.Utils"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <utils:BooleanConverter x:Key="BooleanConverter"/>
+        <utils:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+        <utils:WarningMailStatusToBooleanConverter x:Key="WarningStatusConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <models:ReportItemControlPreferences/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <RadioButton x:Name="Consolidated" GroupName="ConsolidationOption" Content="Consolidated" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Consolidated}" Checked="ConsolidationOptionChecked"/>
+        <RadioButton Grid.Column="1" x:Name="Individual" GroupName="ConsolidationOption" Content="Individual Entries" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Consolidated, Converter={StaticResource BooleanNegationConverter}}" Checked="ConsolidationOptionChecked"/>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="5, 8">
+            <TextBlock Text="Warning Status Mail Action" Margin="5" TextDecorations="Underline"/>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton x:Name="IgnoreWarning" GroupName="WarningMailOption" Content="Ignore" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding WarningPreference, Converter={StaticResource WarningStatusConverter}, ConverterParameter=IgnoreWarning}" Checked="WarningMailOptionChanged"/>
+                <RadioButton x:Name="ConsiderWarningAsError" GroupName="WarningMailOption" Content="Consider as Error" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding WarningPreference, Converter={StaticResource WarningStatusConverter}, ConverterParameter=ConsiderWarningAsError}" Checked="WarningMailOptionChanged"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

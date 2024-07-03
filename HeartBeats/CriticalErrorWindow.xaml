@@ -1,0 +1,40 @@
+﻿<Window x:Class="HeartBeats.CriticalErrorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ATTENTION!!!" Height="300" Width="400"
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" Topmost="True">
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Border BorderBrush="#E9CDA3" BorderThickness="4">
+                <AdornerDecorator>
+                    <ContentPresenter/>
+                </AdornerDecorator>
+            </Border>
+        </ControlTemplate>
+    </Window.Template>
+    <Grid Background="#FFFBE5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="The following errors have occurred an unusually high number of times." FontSize="14" FontWeight="Bold" Margin="10" TextWrapping="Wrap"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ListBox x:Name="UnorderedList" ItemsSource="{Binding}" Margin="10">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="0, 5">
+                            <TextBlock Text="• " FontSize="12"/>
+                            <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text=": " FontSize="12"/>
+                            <TextBlock Text="{Binding Count}" FontSize="12"/>
+                            <TextBlock Text=" time(s)" FontSize="12"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+        <Button Grid.Row="2" Style="{StaticResource Primary}" Margin="10" Width="50" Content="Close" HorizontalAlignment="Right" Click="Close"/>
+    </Grid>
+</Window>
