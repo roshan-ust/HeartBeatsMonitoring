@@ -5,7 +5,6 @@ namespace HeartBeats.Utils
     public static class Constants
     {
         public static readonly int ErrorCriticalThreshold;
-        public static readonly TimeSpan TimeZoneDifference;
 
         public static readonly string[] ErrorsTobeMonitored;
 
@@ -21,15 +20,17 @@ namespace HeartBeats.Utils
             ConsiderAsError
         }
 
+        public enum TimeZone
+        {
+            EST,
+            UTC,
+            IST
+        }
+
         static Constants()
         {
             ErrorCriticalThreshold = AppSettingsReader.ReadValue<int>(nameof(ErrorCriticalThreshold));
             ErrorsTobeMonitored = AppSettingsReader.ReadArray<string>(nameof(ErrorsTobeMonitored));
-            TimeZoneDifference = AppSettingsReader.ReadValue<TimeSpan>(nameof(TimeZoneDifference));
-            if (AppSettingsReader.ReadValue<bool>("DayLights") == true)
-            {
-                TimeZoneDifference = TimeZoneDifference.Add(new TimeSpan(-1, 0, 0));
-            }
             ExcludedFolders = AppSettingsReader.ReadArray<string>(nameof(ExcludedFolders));
         }
     }

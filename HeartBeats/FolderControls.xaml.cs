@@ -21,7 +21,7 @@ namespace HeartBeats
     /// </summary>
     public partial class FolderControls : UserControl
     {
-        private FolderPreferences _folderControls;
+        private FolderPreferences _folderControls = new FolderPreferences();
         public FolderControls()
         {
             InitializeComponent();

@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="HeartBeats.Controls.DateTimePickerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:HeartBeats.Controls"
+             xmlns:models="clr-namespace:HeartBeats.Models"
+             xmlns:utils="clr-namespace:HeartBeats.Utils"
+             Height="Auto" VerticalAlignment="Center"
+             DataContextChanged="OnDataContextChanged">
+    <UserControl.DataContext>
+        <models:DateTimeDetail/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <utils:DateTimeDateTimeDetailConverter x:Key="DateTimeConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Date: " VerticalAlignment="Center"/>
+            <Border Grid.Column="1" BorderThickness="1,1,0,1" CornerRadius="4,0,0,4" BorderBrush="Gray" Padding="1" VerticalAlignment="Center" HorizontalAlignment="Left" Height="30" Margin="20,0,0,0">
+                <TextBox IsReadOnly="True" Text="{Binding SelectedDate, StringFormat='MM/dd/yyyy'}" BorderThickness="0" Height="30" Padding="0" Margin="0" VerticalContentAlignment="Center"/>
+            </Border>
+
+            <Border Grid.Column="2" Grid.ColumnSpan="6" BorderThickness="0,1,1,1" CornerRadius="0,4,4,0" BorderBrush="Gray" Padding="1" VerticalAlignment="Center" HorizontalAlignment="Left" Height="30">
+                <DatePicker x:Name="DatePicker" SelectedDate="{Binding SelectedDate}" Margin="0" Padding="3" Width="30" BorderThickness="0" VerticalContentAlignment="Center" HorizontalAlignment="Center">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DatePickerTextBox">
+                                        <Grid VerticalAlignment="Center">
+                                            <TextBox x:Name="PART_TextBox" Height="Auto"
+                                     Visibility="Hidden"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
+            </Border>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Hours: " Margin="0,0,5,0" VerticalAlignment="Center"/>
+            <!-- NumericInputControl for hour selection -->
+            <controls:NumericInput Grid.Row="1" Grid.Column="1" x:Name="HourInput" MinValue="1" MaxValue="12" Value="{Binding SelectedHour}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
+
+            <!-- NumericInputControl for minute selection -->
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="Mins: " Margin="5,0,5,0" VerticalAlignment="Center"/>
+
+            <controls:NumericInput Grid.Row="1" Grid.Column="3" x:Name="MinuteInput" MinValue="0" MaxValue="59" Value="{Binding SelectedMinute}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
+
+            <!-- NumericInputControl for minute selection -->
+            <TextBlock Grid.Row="1" Grid.Column="4" Text="Sec: " Margin="5,0,5,0" VerticalAlignment="Center"/>
+
+            <controls:NumericInput Grid.Row="1" Grid.Column="5" x:Name="SecondInput" MinValue="0" MaxValue="59" Value="{Binding SelectedSecond}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="6" Text="AM/PM: " Margin="5,0,5,0" VerticalAlignment="Center"/>
+
+            <!-- ComboBox for AM/PM selection -->
+            <ComboBox Grid.Row="1" Grid.Column="7" x:Name="AmPmComboBox" SelectedValue="{Binding SelectedAmPm}" SelectedValuePath="Content" Margin="5" Width="50" Height="30" Padding="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                <ComboBoxItem Content="AM"/>
+                <ComboBoxItem Content="PM"/>
+            </ComboBox>
+
+
+        </Grid>
+    </Grid>
+</UserControl>

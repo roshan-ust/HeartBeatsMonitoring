@@ -106,8 +106,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\DateTimePickerControl.xaml.cs">
+      <DependentUpon>DateTimePickerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NumericInput.xaml.cs">
+      <DependentUpon>NumericInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CriticalErrorWindow.xaml.cs">
       <DependentUpon>CriticalErrorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FilterControls.xaml.cs">
+      <DependentUpon>FilterControls.xaml</DependentUpon>
     </Compile>
     <Compile Include="FolderControls.xaml.cs">
       <DependentUpon>FolderControls.xaml</DependentUpon>
@@ -124,7 +133,10 @@
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DateTimeDetail.cs" />
+    <Compile Include="Models\FilterPreferences.cs" />
     <Compile Include="Models\NotificationItem.cs" />
+    <Compile Include="Models\NumericValue.cs" />
     <Compile Include="Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
     </Compile>
@@ -135,6 +147,8 @@
       <DependentUpon>SyncControls.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\AppSettingsReader.cs" />
+    <Compile Include="Utils\DateTimeConverter.cs" />
+    <Compile Include="Utils\DateTimeDateTimeDetailConverter.cs" />
     <Compile Include="Utils\WarningMailStatusToBooleanConverter.cs" />
     <Compile Include="Utils\BooleanConverter.cs" />
     <Compile Include="Utils\BooleanNegationConverter.cs" />
@@ -142,7 +156,19 @@
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Utils\WordDocumentExporter.cs" />
+    <Page Include="Controls\DateTimePickerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NumericInput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CriticalErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FilterControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,8 +12,11 @@ namespace HeartBeats.Models
             get { return _consolidated; }
             set
             {
-                _consolidated = value;
-                OnPropertyChanged(nameof(Consolidated));
+                if (_consolidated != value)
+                {
+                    _consolidated = value;
+                    OnPropertyChanged(nameof(Consolidated)); 
+                }
             }
         }
 
@@ -24,8 +27,11 @@ namespace HeartBeats.Models
             get { return _warningPreference; }
             set
             {
-                _warningPreference = value;
-                OnPropertyChanged(nameof(WarningPreference));
+                if (_warningPreference != value)
+                {
+                    _warningPreference = value;
+                    OnPropertyChanged(nameof(WarningPreference)); 
+                }
             }
         }
 

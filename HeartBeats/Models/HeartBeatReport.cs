@@ -12,6 +12,7 @@ namespace HeartBeats.Models
     public class HeartBeatReport : INotifyPropertyChanged
     {
         private ReportItemControlPreferences _reportItemControlPreferences = new ReportItemControlPreferences();
+        private FilterPreferences _filterPreferences = new FilterPreferences();
         private List<MailDetail> _mails = new List<MailDetail>();
         private List<HeartBeatItem> _reportItems = new List<HeartBeatItem>();
         public List<MailDetail> Mails
@@ -31,6 +32,16 @@ namespace HeartBeats.Models
             {
                 _reportItemControlPreferences = value;
                 OnPropertyChanged(nameof(ReportItemControlPreferences));
+            }
+        }
+
+        public FilterPreferences FilterPreferences
+        {
+            get { return _filterPreferences; }
+            set
+            {
+                _filterPreferences = value;
+                OnPropertyChanged(nameof(FilterPreferences));
             }
         }
 
@@ -73,14 +84,14 @@ namespace HeartBeats.Models
 
             if (lastReportItem != null)
             {
-                var today = DateTime.Today.Add(Constants.TimeZoneDifference);
+                var today = Utils.DateTimeConverter.ConvertESTtoUTC(_filterPreferences.StartDateTime);
                 if (lastReportItem.Date <= today)
                 {
                     _reportItems.Clear();
                 }
                 else
                 {
-                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => mail.ReceivedTime.Add(Constants.TimeZoneDifference) > lastReportItem.Date || (mail.ReceivedTime.Add(Constants.TimeZoneDifference) == lastReportItem.Date && !mail.Body.Contains($"Name: {lastReportItem.Name}\r\n"))).ToList();
+                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => Utils.DateTimeConverter.ConvertUTCtoEST(mail.ReceivedTime) > lastReportItem.Date || (Utils.DateTimeConverter.ConvertUTCtoEST(mail.ReceivedTime) == lastReportItem.Date && !mail.Body.Contains($"Name: {lastReportItem.Name}\r\n"))).ToList();
                 }
             }
 
@@ -117,7 +128,7 @@ namespace HeartBeats.Models
                 {
                     if (DateTime.TryParse(part.Substring("Last Run:".Length).Trim(), out DateTime date))
                     {
-                        reportItem.Date = date.Add(Constants.TimeZoneDifference);
+                        reportItem.Date = Utils.DateTimeConverter.ConvertUTCtoEST(date);
                     }
                 }
                 else if (part.StartsWith("Error Message:"))

@@ -29,6 +29,7 @@ namespace HeartBeats
 
         private void Close(object sender, RoutedEventArgs args)
         {
+            _player?.Close();
             Close();
         }
 

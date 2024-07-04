@@ -46,6 +46,9 @@
             <Expander x:Name="Expander3" Expanded="Expander_Expanded" Header="Sync Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
                 <local:SyncControls x:Name="SyncControls" Margin="0, 5"/>
             </Expander>
+            <Expander x:Name="Expander4" Expanded="Expander_Expanded" Header="Filter Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
+                <local:FilterControls x:Name="FilterControls" Margin="0, 5"/>
+            </Expander>
         </StackPanel>
 
         <Grid Grid.Row="2">

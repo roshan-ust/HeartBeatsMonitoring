@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="HeartBeats.Controls.NumericInput"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:HeartBeats.Controls">
+    <Grid VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- TextBox for numeric input -->
+        <TextBox Width="55" x:Name="NumericTextBox" Grid.Column="0" Height="Auto"
+                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:NumericInput}}, Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                 PreviewTextInput="NumericOnlyInput"
+                 PreviewKeyDown="NumericTextBox_PreviewKeyDown"
+                 TextChanged="NumericTextBox_TextChanged"/>
+
+        <!-- Buttons for increment and decrement -->
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <Button Content="▲" Click="IncreaseValue" VerticalAlignment="Top" Margin="0" FontSize="8"/>
+            <Button Content="▼" Click="DecreaseValue" VerticalAlignment="Bottom" Margin="0" FontSize="8"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

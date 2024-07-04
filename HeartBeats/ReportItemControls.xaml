@@ -24,13 +24,13 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <RadioButton x:Name="Consolidated" GroupName="ConsolidationOption" Content="Consolidated" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Consolidated}" Checked="ConsolidationOptionChecked"/>
-        <RadioButton Grid.Column="1" x:Name="Individual" GroupName="ConsolidationOption" Content="Individual Entries" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Consolidated, Converter={StaticResource BooleanNegationConverter}}" Checked="ConsolidationOptionChecked"/>
+        <RadioButton x:Name="Consolidated" GroupName="ConsolidationOption" Content="Consolidated" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Consolidated, Mode=OneWay}" Click="ConsolidationOptionChecked"/>
+        <RadioButton Grid.Column="1" x:Name="Individual" GroupName="ConsolidationOption" Content="Individual Entries" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Consolidated, Converter={StaticResource BooleanNegationConverter}, Mode=OneWay}" Click="ConsolidationOptionChecked"/>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="5, 8">
             <TextBlock Text="Warning Status Mail Action" Margin="5" TextDecorations="Underline"/>
             <StackPanel Orientation="Horizontal">
-                <RadioButton x:Name="IgnoreWarning" GroupName="WarningMailOption" Content="Ignore" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding WarningPreference, Converter={StaticResource WarningStatusConverter}, ConverterParameter=IgnoreWarning}" Checked="WarningMailOptionChanged"/>
-                <RadioButton x:Name="ConsiderWarningAsError" GroupName="WarningMailOption" Content="Consider as Error" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding WarningPreference, Converter={StaticResource WarningStatusConverter}, ConverterParameter=ConsiderWarningAsError}" Checked="WarningMailOptionChanged"/>
+                <RadioButton x:Name="IgnoreWarning" GroupName="WarningMailOption" Content="Ignore" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding WarningPreference, Converter={StaticResource WarningStatusConverter}, ConverterParameter=IgnoreWarning, Mode=OneWay}" Click="WarningMailOptionChanged"/>
+                <RadioButton x:Name="ConsiderWarningAsError" GroupName="WarningMailOption" Content="Consider as Error" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding WarningPreference, Converter={StaticResource WarningStatusConverter}, ConverterParameter=ConsiderWarningAsError, Mode=OneWay}" Click="WarningMailOptionChanged"/>
             </StackPanel>
         </StackPanel>
     </Grid>

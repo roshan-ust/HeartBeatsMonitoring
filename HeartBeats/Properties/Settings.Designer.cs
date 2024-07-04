@@ -63,15 +63,6 @@ namespace HeartBeats.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-05:00:00")]
-        public global::System.TimeSpan TimeZoneDifference {
-            get {
-                return ((global::System.TimeSpan)(this["TimeZoneDifference"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool PlayNotificationSound {
             get {

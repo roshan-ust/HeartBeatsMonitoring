@@ -30,6 +30,7 @@ namespace HeartBeats
         private FolderPreferences _folderPreferences = new FolderPreferences();
         private ReportItemControlPreferences _reportItemControlPreferences;
         private SyncPreferences _syncPreferences = new SyncPreferences();
+        private FilterPreferences _filterPreferences = new FilterPreferences();
 
         public HomePage(BasicProps user)
         {
@@ -42,7 +43,8 @@ namespace HeartBeats
             _heartBeatReport.PropertyChanged += HeartBeatReportDataChange;
             ReportItemControls.UpdateDataContext(_reportItemControlPreferences);
             SyncControls.UpdateDataContext(_syncPreferences);
-
+            _filterPreferences = _heartBeatReport.FilterPreferences;
+            FilterControls.UpdateDataContext(_filterPreferences);
         }
 
         private void SetupTimer(int minutes)
@@ -130,7 +132,7 @@ namespace HeartBeats
                 }
             }
 
-            if(notifications.Count > 0)
+            if (notifications.Count > 0)
             {
                 CriticalErrorWindow notificationWindow = new CriticalErrorWindow(notifications);
                 notificationWindow.Show();
@@ -288,9 +290,7 @@ namespace HeartBeats
                 // Check if the current folder is not in the excluded list
                 if (!Constants.ExcludedFolders.Contains(folder.Name))
                 {
-                    DateTime endTime = DateTime.Now;
-
-                    string filter = $"@SQL=\"urn:schemas:httpmail:subject\" LIKE '%Heartbeat Application%' AND \"urn:schemas:httpmail:datereceived\" >= '{endTime.Date.Add(Constants.TimeZoneDifference).ToString("MM/dd/yyyy HH:mm:ss")}' AND \"urn:schemas:httpmail:datereceived\" <= '{endTime.Add(Constants.TimeZoneDifference).ToString("MM/dd/yyyy HH:mm:ss")}'";
+                    string filter = $"@SQL=\"urn:schemas:httpmail:subject\" LIKE '%Heartbeat Application%' AND \"urn:schemas:httpmail:datereceived\" >= '{Utils.DateTimeConverter.ConvertESTtoUTC(_filterPreferences.StartDateTime):yyyy-MM-dd HH:mm:ss}' AND \"urn:schemas:httpmail:datereceived\" <= '{Utils.DateTimeConverter.ConvertESTtoUTC(_filterPreferences.EndDateTime):yyyy-MM-dd HH:mm:ss}'";
 
                     Items items = folder.Items.Restrict(filter);
                     if (items.Count > 0)
