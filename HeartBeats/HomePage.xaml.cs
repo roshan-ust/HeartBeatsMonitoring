@@ -290,7 +290,7 @@ namespace HeartBeats
                 // Check if the current folder is not in the excluded list
                 if (!Constants.ExcludedFolders.Contains(folder.Name))
                 {
-                    string filter = $"@SQL=\"urn:schemas:httpmail:subject\" LIKE '%Heartbeat Application%' AND \"urn:schemas:httpmail:datereceived\" >= '{Utils.DateTimeConverter.ConvertESTtoUTC(_filterPreferences.StartDateTime):yyyy-MM-dd HH:mm:ss}' AND \"urn:schemas:httpmail:datereceived\" <= '{Utils.DateTimeConverter.ConvertESTtoUTC(_filterPreferences.EndDateTime):yyyy-MM-dd HH:mm:ss}'";
+                    string filter = $"@SQL=\"urn:schemas:httpmail:subject\" LIKE '%Heartbeat Application%' AND \"urn:schemas:httpmail:datereceived\" >= '{Utils.DateTimeConverter.ConvertTimeZone(_filterPreferences.StartDateTime, _filterPreferences.TimeZone):yyyy-MM-dd HH:mm:ss}' AND \"urn:schemas:httpmail:datereceived\" <= '{Utils.DateTimeConverter.ConvertTimeZone(_filterPreferences.EndDateTime, _filterPreferences.TimeZone):yyyy-MM-dd HH:mm:ss}'";
 
                     Items items = folder.Items.Restrict(filter);
                     if (items.Count > 0)

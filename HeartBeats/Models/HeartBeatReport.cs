@@ -84,14 +84,14 @@ namespace HeartBeats.Models
 
             if (lastReportItem != null)
             {
-                var today = Utils.DateTimeConverter.ConvertESTtoUTC(_filterPreferences.StartDateTime);
+                var today = Utils.DateTimeConverter.ConvertTimeZone(_filterPreferences.StartDateTime, _filterPreferences.TimeZone);
                 if (lastReportItem.Date <= today)
                 {
                     _reportItems.Clear();
                 }
                 else
                 {
-                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => Utils.DateTimeConverter.ConvertUTCtoEST(mail.ReceivedTime) > lastReportItem.Date || (Utils.DateTimeConverter.ConvertUTCtoEST(mail.ReceivedTime) == lastReportItem.Date && !mail.Body.Contains($"Name: {lastReportItem.Name}\r\n"))).ToList();
+                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) > lastReportItem.Date || (Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) == lastReportItem.Date && !mail.Body.Contains($"Name: {lastReportItem.Name}\r\n"))).ToList();
                 }
             }
 
@@ -128,7 +128,7 @@ namespace HeartBeats.Models
                 {
                     if (DateTime.TryParse(part.Substring("Last Run:".Length).Trim(), out DateTime date))
                     {
-                        reportItem.Date = Utils.DateTimeConverter.ConvertUTCtoEST(date);
+                        reportItem.Date = Utils.DateTimeConverter.ConvertTimeZone(date, Constants.TimeZone.UTC, Constants.TimeZone.EST);
                     }
                 }
                 else if (part.StartsWith("Error Message:"))

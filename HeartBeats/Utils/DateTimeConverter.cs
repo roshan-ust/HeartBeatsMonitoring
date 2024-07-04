@@ -24,8 +24,55 @@ namespace HeartBeats.Utils
             Debug.WriteLine("Hour: " + hour);
             return new DateTime(dateTimeDetail.SelectedDate.Value.Year, dateTimeDetail.SelectedDate.Value.Month, dateTimeDetail.SelectedDate.Value.Day, hour, dateTimeDetail.SelectedMinute, dateTimeDetail.SelectedSecond);
         }
-        
-        public static DateTime ConvertESTtoUTC(DateTime dateTimeEST)
+
+        public static DateTime ConvertTimeZone(DateTime dateTime, Constants.TimeZone sourceTimeZone = Constants.TimeZone.UTC, Constants.TimeZone destinationTimeZone = Constants.TimeZone.UTC)
+        {
+            return ConvertFromUTC(ConvertToUTC(dateTime, sourceTimeZone), destinationTimeZone);
+        }
+
+        private static DateTime ConvertToUTC(DateTime dateTime, Constants.TimeZone timeZone = Constants.TimeZone.UTC)
+        {
+            switch (timeZone)
+            {
+                case Constants.TimeZone.EST:
+                    return ConvertESTtoUTC(dateTime);
+                case Constants.TimeZone.IST:
+                    return ConvertISTtoUTC(dateTime);
+                default:
+                    return dateTime;
+            }
+        }
+
+        private static DateTime ConvertFromUTC(DateTime dateTime, Constants.TimeZone timeZone = Constants.TimeZone.UTC)
+        {
+            switch (timeZone)
+            {
+                case Constants.TimeZone.EST:
+                    return ConvertUTCtoEST(dateTime);
+                case Constants.TimeZone.IST:
+                    return ConvertUTCtoIST(dateTime);
+                default:
+                    return dateTime;
+            }
+        }
+
+        private static DateTime ConvertISTtoUTC(DateTime dateTimeIST)
+        {
+            // Define the EST time zone
+            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Indian Standard Time");
+
+            return TimeZoneInfo.ConvertTimeToUtc(dateTimeIST, istTimeZone);
+        }
+
+        private static DateTime ConvertUTCtoIST(DateTime dateTimeUTC)
+        {
+            // Define the EST time zone
+            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Indian Standard Time");
+
+            return TimeZoneInfo.ConvertTimeFromUtc(dateTimeUTC, istTimeZone);
+        }
+
+        private static DateTime ConvertESTtoUTC(DateTime dateTimeEST)
         {
             // Define the EST time zone
             TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
@@ -42,12 +89,10 @@ namespace HeartBeats.Utils
             }
 
             // Convert the EST/EDT time to UTC
-            DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(dateTimeEST, estTimeZone);
-
-            return utcDateTime;
+            return TimeZoneInfo.ConvertTimeToUtc(dateTimeEST, estTimeZone);
         }
 
-        public static DateTime ConvertUTCtoEST(DateTime dateTimeUTC)
+        private static DateTime ConvertUTCtoEST(DateTime dateTimeUTC)
         {
             // Define the EST time zone
             TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
