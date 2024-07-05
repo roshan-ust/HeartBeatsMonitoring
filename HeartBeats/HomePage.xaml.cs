@@ -49,22 +49,6 @@ namespace HeartBeats
             ExportControls.UpdateDataContext(_exportControls);
         }
 
-        private void SetupTimer(int minutes)
-        {
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMinutes(minutes); // Set the interval to 5 seconds
-            _timer.Tick += FetchHeartBeatMails;
-            _timer.Start();
-        }
-
-        private void ClearTimer()
-        {
-            if (_timer != null)
-            {
-                _timer.Stop();
-            }
-        }
-
         private void ShowHideLoader(bool show)
         {
 
@@ -146,20 +130,17 @@ namespace HeartBeats
             _notifyIcon.Dispose();
         }
 
-        private void FetchHeartBeatMails(object sender, EventArgs e)
+        private void IntervalReachedEvent(object sender, EventArgs args)
         {
             FetchHeartBeatMails();
         }
 
         private void FetchHeartBeatMails(object sender, RoutedEventArgs args)
         {
-            if (_syncPreferences.Manual)
+
+            if (!_syncPreferences.Manual)
             {
-                ClearTimer();
-            }
-            else
-            {
-                SetupTimer(_syncPreferences.Interval);
+                SyncControls.IntervalReached += IntervalReachedEvent;
             }
 
             FetchHeartBeatMails();
@@ -167,8 +148,18 @@ namespace HeartBeats
 
         private async void FetchHeartBeatMails()
         {
+            var utcEndDateTime = Utils.DateTimeConverter.ConvertTimeZone(_filterPreferences.EndDateTime, _filterPreferences.TimeZone);
+            if (utcEndDateTime < DateTime.UtcNow)
+            {
+                _filterPreferences.EndDateTime = Utils.DateTimeConverter.ConvertTimeZone(DateTime.UtcNow.AddMinutes(_syncPreferences.Interval * 2), Constants.TimeZone.UTC, _filterPreferences.TimeZone);
+                FilterControls.UpdateDataContext(_filterPreferences);
+            }
             ShowHideLoader(true);
             _heartBeatReport.Mails = await Task.Run(() => GetHeartBeatMails());
+            if (!_syncPreferences.Manual)
+            {
+                SyncControls.StartTimer();
+            }
         }
 
         private async void ExportReport(object sender, RoutedEventArgs args)

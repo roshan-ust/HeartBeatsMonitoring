@@ -106,6 +106,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\CountdownTimer.xaml.cs">
+      <DependentUpon>CountdownTimer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DateTimePickerControl.xaml.cs">
       <DependentUpon>DateTimePickerControl.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,7 @@
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\CountdownTimer.cs" />
     <Compile Include="Models\DateTimeDetail.cs" />
     <Compile Include="Models\ExportControls.cs" />
     <Compile Include="Models\FilterPreferences.cs" />
@@ -161,6 +165,10 @@
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Utils\WordDocumentExporter.cs" />
+    <Page Include="Controls\CountdownTimer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\DateTimePickerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,6 +1,7 @@
 ﻿using HeartBeats.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,16 +23,32 @@ namespace HeartBeats
     public partial class SyncControls : UserControl
     {
         private SyncPreferences _syncPreferences = new SyncPreferences();
+        public event EventHandler IntervalReached;
         public SyncControls()
         {
             InitializeComponent();
             UpdateDataContext(_syncPreferences);
+            CountdownTimer.IntervalReached += IntervalReachedEvent;
+        }
+
+        private void IntervalReachedEvent(object sender, EventArgs e)
+        {
+            IntervalReached?.Invoke(sender, e);
         }
 
         public void UpdateDataContext(SyncPreferences syncPreferences)
         {
             _syncPreferences = syncPreferences;
             DataContext = _syncPreferences;
+            CountdownTimer.UpdateTimer(_syncPreferences.Interval);
+        }
+
+        public void StartTimer()
+        {
+            if (!_syncPreferences.Manual)
+            {
+                CountdownTimer.StartTimer();
+            }
         }
 
         private void SyncOptionChecked(object sender, RoutedEventArgs args)
@@ -41,13 +58,23 @@ namespace HeartBeats
             if (radio.Name == "Manual")
             {
                 _syncPreferences.Manual = true;
+                CountdownTimer.StopTimer();
             }
             else if (radio.Name == "Automatic")
             {
                 _syncPreferences.Manual = false;
+                CountdownTimer.UpdateTimer(_syncPreferences.Interval);
             }
 
             DataContext = _syncPreferences;
+        }
+
+        private void IntervalSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (!_syncPreferences.Manual)
+            {
+                CountdownTimer.UpdateTimer(_syncPreferences.Interval);
+            }
         }
     }
 }
