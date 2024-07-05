@@ -31,6 +31,7 @@ namespace HeartBeats
         private ReportItemControlPreferences _reportItemControlPreferences;
         private SyncPreferences _syncPreferences = new SyncPreferences();
         private FilterPreferences _filterPreferences = new FilterPreferences();
+        private ExportControls _exportControls = new ExportControls();
 
         public HomePage(BasicProps user)
         {
@@ -45,6 +46,7 @@ namespace HeartBeats
             SyncControls.UpdateDataContext(_syncPreferences);
             _filterPreferences = _heartBeatReport.FilterPreferences;
             FilterControls.UpdateDataContext(_filterPreferences);
+            ExportControls.UpdateDataContext(_exportControls);
         }
 
         private void SetupTimer(int minutes)
@@ -169,10 +171,10 @@ namespace HeartBeats
             _heartBeatReport.Mails = await Task.Run(() => GetHeartBeatMails());
         }
 
-        private void ExportReport(object sender, RoutedEventArgs args)
+        private async void ExportReport(object sender, RoutedEventArgs args)
         {
             ShowHideLoader(true);
-            WordDocumentExporter.ExportHeartBeatToWord(_heartBeatReport.ReportItems, "D:\\Wolseley\\SampleReport.docx");
+            await Task.Run(() => WordDocumentExporter.ExportHeartBeatToWord(_heartBeatReport.ReportItems, _exportControls.ExportFilePath));
             ShowHideLoader(false);
         }
 

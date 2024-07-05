@@ -115,6 +115,9 @@
     <Compile Include="CriticalErrorWindow.xaml.cs">
       <DependentUpon>CriticalErrorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExportPreferences.xaml.cs">
+      <DependentUpon>ExportPreferences.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FilterControls.xaml.cs">
       <DependentUpon>FilterControls.xaml</DependentUpon>
     </Compile>
@@ -134,6 +137,7 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\DateTimeDetail.cs" />
+    <Compile Include="Models\ExportControls.cs" />
     <Compile Include="Models\FilterPreferences.cs" />
     <Compile Include="Models\NotificationItem.cs" />
     <Compile Include="Models\NumericValue.cs" />
@@ -166,6 +170,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CriticalErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExportPreferences.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

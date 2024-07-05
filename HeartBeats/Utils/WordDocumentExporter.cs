@@ -1,69 +1,106 @@
-﻿using System.Collections;
-using System.IO;
-using System.Windows.Controls;
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using HeartBeats.Models;
+using System.Collections;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace HeartBeats.Utils
 {
     public static class WordDocumentExporter
     {
+        static bool IsTrulyAbsolutePath(string path)
+        {
+            if (Path.IsPathRooted(path))
+            {
+                // Check if the path contains a drive letter
+                return Regex.IsMatch(path, @"^[a-zA-Z]:\\");
+            }
+            return false;
+        }
+
         public static void ExportHeartBeatToWord(IEnumerable itemsSource, string outputPath)
         {
-            using (WordprocessingDocument doc = WordprocessingDocument.Create(outputPath, WordprocessingDocumentType.Document))
+            if (!IsTrulyAbsolutePath(outputPath))
             {
-                MainDocumentPart mainPart = doc.AddMainDocumentPart();
-                mainPart.Document = new Document();
-                Body body = mainPart.Document.AppendChild(new Body());
+                string currentDirectory = Directory.GetCurrentDirectory();
+                outputPath = Path.Combine(currentDirectory, outputPath.TrimStart('/'));
+            }
 
-                // Add the table
-                Table table = new Table();
-                TableProperties tableProperties = new TableProperties(
-                    new TableBorders(
-                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 })
-                );
-                table.AppendChild(tableProperties);
+            string directoryPath = Path.GetDirectoryName(outputPath);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
 
-                // Add the title row
-                TableRow titleRow = new TableRow();
-                TableCell titleCell = GenerateCell("Heartbeats Report", true, 12);
-                TableCellProperties titleCellProperties = new TableCellProperties(new GridSpan { Val = 4 });
-                titleCell.AppendChild(titleCellProperties);
-                titleRow.AppendChild(titleCell);
-                table.AppendChild(titleRow);
-
-                // Add table header row
-                TableRow headerRow = new TableRow();
-                AddHeaderCell(headerRow, "Date (EST)");
-                AddHeaderCell(headerRow, "Name");
-                AddHeaderCell(headerRow, "Message");
-                AddHeaderCell(headerRow, "Comments");
-                table.AppendChild(headerRow);
-
-                // Add table data rows
-                foreach (var item in itemsSource)
+            try
+            {
+                using (WordprocessingDocument doc = WordprocessingDocument.Create(outputPath, WordprocessingDocumentType.Document))
                 {
-                    if (item is HeartBeatItem heartbeat)
-                    {
-                        TableRow dataRow = new TableRow();
-                        AddDataCell(dataRow, heartbeat.Date.ToString());
-                        AddDataCell(dataRow, heartbeat.Name);
-                        AddDataCell(dataRow, heartbeat.Message);
-                        AddDataCell(dataRow, heartbeat.Status);
-                        table.AppendChild(dataRow);
-                    }
+                    UpdateFile(doc, itemsSource);
                 }
 
-                body.Append(table);
-                mainPart.Document.Save();
+                MessageBox.Show("File successfully saved at: " + outputPath);
             }
+            catch (IOException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private static void UpdateFile(WordprocessingDocument doc, IEnumerable itemsSource)
+        {
+            MainDocumentPart mainPart = doc.AddMainDocumentPart();
+            mainPart.Document = new Document();
+            Body body = mainPart.Document.AppendChild(new Body());
+
+            // Add the table
+            Table table = new Table();
+            TableProperties tableProperties = new TableProperties(
+                new TableBorders(
+                    new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 })
+            );
+            table.AppendChild(tableProperties);
+
+            // Add the title row
+            TableRow titleRow = new TableRow();
+            TableCell titleCell = GenerateCell("Heartbeats Report", true, 12);
+            TableCellProperties titleCellProperties = new TableCellProperties(new GridSpan { Val = 4 });
+            titleCell.AppendChild(titleCellProperties);
+            titleRow.AppendChild(titleCell);
+            table.AppendChild(titleRow);
+
+            // Add table header row
+            TableRow headerRow = new TableRow();
+            AddHeaderCell(headerRow, "Date (EST)");
+            AddHeaderCell(headerRow, "Name");
+            AddHeaderCell(headerRow, "Message");
+            AddHeaderCell(headerRow, "Comments");
+            table.AppendChild(headerRow);
+
+            // Add table data rows
+            foreach (var item in itemsSource)
+            {
+                if (item is HeartBeatItem heartbeat)
+                {
+                    TableRow dataRow = new TableRow();
+                    AddDataCell(dataRow, heartbeat.Date.ToString());
+                    AddDataCell(dataRow, heartbeat.Name);
+                    AddDataCell(dataRow, heartbeat.Message);
+                    AddDataCell(dataRow, heartbeat.Status);
+                    table.AppendChild(dataRow);
+                }
+            }
+
+            body.Append(table);
+            mainPart.Document.Save();
         }
 
         private static void AddHeaderCell(TableRow row, string text, int fontSize = 10)
@@ -114,5 +151,5 @@ namespace HeartBeats.Utils
 
             return cell;
         }
-    } 
+    }
 }

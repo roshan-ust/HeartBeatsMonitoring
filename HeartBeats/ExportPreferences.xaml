@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="HeartBeats.ExportPreferences"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:models="clr-namespace:HeartBeats.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <models:ExportControls/>
+    </UserControl.DataContext>
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="File Path:" VerticalAlignment="Center"/>
+        <TextBox Grid.Column="1"  Text="{Binding ExportFilePath, Mode=TwoWay}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+    </Grid>
+</UserControl>
