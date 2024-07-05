@@ -44,8 +44,7 @@ namespace HeartBeats.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NoOrderHistoryItemRecievedHoursQP;NoOrderHistoryItemRecievedHoursMG;PProductWithE" +
-            "rror")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Site Availability;login Check")]
         public string ErrorsTobeMonitored {
             get {
                 return ((string)(this["ErrorsTobeMonitored"]));

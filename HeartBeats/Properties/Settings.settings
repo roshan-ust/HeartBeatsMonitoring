@@ -10,7 +10,7 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="ErrorsTobeMonitored" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">NoOrderHistoryItemRecievedHoursQP;NoOrderHistoryItemRecievedHoursMG;PProductWithError</Value>
+      <Value Profile="(Default)">Site Availability;login Check</Value>
     </Setting>
     <Setting Name="DayLights" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
