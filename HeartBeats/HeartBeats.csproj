@@ -149,6 +149,7 @@
     <Compile Include="Utils\AppSettingsReader.cs" />
     <Compile Include="Utils\DateTimeConverter.cs" />
     <Compile Include="Utils\DateTimeDateTimeDetailConverter.cs" />
+    <Compile Include="Utils\IntToStringConverter.cs" />
     <Compile Include="Utils\WarningMailStatusToBooleanConverter.cs" />
     <Compile Include="Utils\BooleanConverter.cs" />
     <Compile Include="Utils\BooleanNegationConverter.cs" />

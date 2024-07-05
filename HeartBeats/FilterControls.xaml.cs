@@ -1,6 +1,7 @@
 ﻿using HeartBeats.Models;
 using System;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace HeartBeats
@@ -16,14 +17,28 @@ namespace HeartBeats
         {
             InitializeComponent();
             UpdateDataContext(_filterPreferences);
-            StartDateTimePicker.DateTimePicked += UpdateStartDateTime;
-            EndDateTimePicker.DateTimePicked += UpdateEndDateTime;
         }
 
         public void UpdateDataContext(FilterPreferences filterPreferences)
         {
             _filterPreferences = filterPreferences;
             DataContext = filterPreferences;
+            ((FilterPreferences)DataContext).PropertyChanged -= UpdateFilterPreferences;
+            ((FilterPreferences)DataContext).PropertyChanged += UpdateFilterPreferences;
+            StartDateTimePicker.UpdateDataContext(Utils.DateTimeConverter.DateTimeToDateTimeDetail(_filterPreferences.StartDateTime));
+            EndDateTimePicker.UpdateDataContext(Utils.DateTimeConverter.DateTimeToDateTimeDetail(_filterPreferences.EndDateTime));
+        }
+
+        private void UpdateFilterPreferences(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(FilterPreferences.StartDateTime))
+            {
+                UpdateStartDateTime(sender, _filterPreferences.StartDateTime);
+            }
+            else if (args.PropertyName == nameof(FilterPreferences.EndDateTime))
+            {
+                UpdateEndDateTime(sender, _filterPreferences.EndDateTime);
+            }
         }
 
         private void UpdateStartDateTime(object sender, DateTime dateTime)

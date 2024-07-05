@@ -18,14 +18,23 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock Text="Start Date and Time (EST)" TextDecorations="Underline" Margin="5" FontSize="12"/>
-            <controls:DateTimePickerControl x:Name="StartDateTimePicker" DataContext="{Binding StartDateTime, Converter={StaticResource DateTimeConverter}}" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="TimeZone: " Margin="5" FontSize="12" VerticalAlignment="Center"/>
+            <ComboBox SelectedValue="{Binding TimeZone}" SelectedValuePath="Content" Margin="5" Height="30" Padding="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                <ComboBoxItem Content="EST"/>
+                <ComboBoxItem Content="IST"/>
+                <ComboBoxItem Content="UTC"/>
+            </ComboBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="0,5">
-            <TextBlock Text="End Date and Time (EST)" TextDecorations="Underline" Margin="5" FontSize="12"/>
-            <controls:DateTimePickerControl x:Name="EndDateTimePicker" DataContext="{Binding EndDateTime, Converter={StaticResource DateTimeConverter}}" VerticalAlignment="Center"/>
+            <TextBlock Text="Start Date and Time" TextDecorations="Underline" Margin="5" FontSize="12"/>
+            <controls:DateTimePickerControl x:Name="StartDateTimePicker" DataContext="{Binding StartDateTime, Converter={StaticResource DateTimeConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Margin="0,5">
+            <TextBlock Text="End Date and Time" TextDecorations="Underline" Margin="5" FontSize="12"/>
+            <controls:DateTimePickerControl x:Name="EndDateTimePicker" DataContext="{Binding EndDateTime, Converter={StaticResource DateTimeConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </UserControl>

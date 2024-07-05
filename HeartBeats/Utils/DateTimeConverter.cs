@@ -21,7 +21,6 @@ namespace HeartBeats.Utils
         public static DateTime DateTimeDetailToDateTime(DateTimeDetail dateTimeDetail)
         {
             int hour = ConvertTo24Hour(dateTimeDetail);
-            Debug.WriteLine("Hour: " + hour);
             return new DateTime(dateTimeDetail.SelectedDate.Value.Year, dateTimeDetail.SelectedDate.Value.Month, dateTimeDetail.SelectedDate.Value.Day, hour, dateTimeDetail.SelectedMinute, dateTimeDetail.SelectedSecond);
         }
 
@@ -59,7 +58,7 @@ namespace HeartBeats.Utils
         private static DateTime ConvertISTtoUTC(DateTime dateTimeIST)
         {
             // Define the EST time zone
-            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Indian Standard Time");
+            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
 
             return TimeZoneInfo.ConvertTimeToUtc(dateTimeIST, istTimeZone);
         }
@@ -67,7 +66,7 @@ namespace HeartBeats.Utils
         private static DateTime ConvertUTCtoIST(DateTime dateTimeUTC)
         {
             // Define the EST time zone
-            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Indian Standard Time");
+            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
 
             return TimeZoneInfo.ConvertTimeFromUtc(dateTimeUTC, istTimeZone);
         }

@@ -4,13 +4,13 @@
              xmlns:controls="clr-namespace:HeartBeats.Controls"
              xmlns:models="clr-namespace:HeartBeats.Models"
              xmlns:utils="clr-namespace:HeartBeats.Utils"
-             Height="Auto" VerticalAlignment="Center"
-             DataContextChanged="OnDataContextChanged">
+             Height="Auto" VerticalAlignment="Center">
     <UserControl.DataContext>
         <models:DateTimeDetail/>
     </UserControl.DataContext>
     <UserControl.Resources>
         <utils:DateTimeDateTimeDetailConverter x:Key="DateTimeConverter"/>
+        <utils:IntToStringConverter x:Key="IntToStringConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid>
@@ -55,17 +55,17 @@
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Hours: " Margin="0,0,5,0" VerticalAlignment="Center"/>
             <!-- NumericInputControl for hour selection -->
-            <controls:NumericInput Grid.Row="1" Grid.Column="1" x:Name="HourInput" MinValue="1" MaxValue="12" Value="{Binding SelectedHour}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
+            <controls:NumericInput Grid.Row="1" Grid.Column="1" x:Name="HourInput" MinValue="1" MaxValue="12" Value="{Binding SelectedHour, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
 
             <!-- NumericInputControl for minute selection -->
             <TextBlock Grid.Row="1" Grid.Column="2" Text="Mins: " Margin="5,0,5,0" VerticalAlignment="Center"/>
 
-            <controls:NumericInput Grid.Row="1" Grid.Column="3" x:Name="MinuteInput" MinValue="0" MaxValue="59" Value="{Binding SelectedMinute}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
+            <controls:NumericInput Grid.Row="1" Grid.Column="3" x:Name="MinuteInput" MinValue="0" MaxValue="59" Value="{Binding SelectedMinute, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
 
             <!-- NumericInputControl for minute selection -->
             <TextBlock Grid.Row="1" Grid.Column="4" Text="Sec: " Margin="5,0,5,0" VerticalAlignment="Center"/>
 
-            <controls:NumericInput Grid.Row="1" Grid.Column="5" x:Name="SecondInput" MinValue="0" MaxValue="59" Value="{Binding SelectedSecond}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
+            <controls:NumericInput Grid.Row="1" Grid.Column="5" x:Name="SecondInput" MinValue="0" MaxValue="59" Value="{Binding SelectedSecond, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5" Height="30" Width="55" HorizontalContentAlignment="Left"/>
 
             <TextBlock Grid.Row="1" Grid.Column="6" Text="AM/PM: " Margin="5,0,5,0" VerticalAlignment="Center"/>
 
