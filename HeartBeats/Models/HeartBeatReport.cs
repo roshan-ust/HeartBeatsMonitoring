@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HeartBeats.Models
 {
@@ -79,23 +76,8 @@ namespace HeartBeats.Models
 
         private void GenerateReportItems()
         {
-            var mailsToBeProcessed = Mails;
-            var lastReportItem = ReportItems.LastOrDefault();
-
-            if (lastReportItem != null)
-            {
-                var today = Utils.DateTimeConverter.ConvertTimeZone(_filterPreferences.StartDateTime, _filterPreferences.TimeZone);
-                if (lastReportItem.Date <= today)
-                {
-                    _reportItems.Clear();
-                }
-                else
-                {
-                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) > lastReportItem.Date || (Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) == lastReportItem.Date && !mail.Body.Contains($"Name: {lastReportItem.Name}\r\n"))).ToList();
-                }
-            }
-
-            foreach (var mail in mailsToBeProcessed)
+            _reportItems.Clear();
+            foreach (var mail in Mails)
             {
                 ProcessMailItem(mail);
             }

@@ -64,7 +64,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.ColumnSpan="3" Text="Preferences updated will only be updated on next sync operation except the export preferences which will be updated on export !!" FontSize="12" Foreground="OrangeRed" Margin="5,10"/>
+            <TextBlock TextWrapping="Wrap" Grid.ColumnSpan="3" Text="Preferences updated will only be updated on next sync operation except the export preferences which will be updated on export !!" FontSize="12" Foreground="OrangeRed" Margin="5,10"/>
             <Button Grid.Row="1" Style="{StaticResource Primary}" Click="FetchHeartBeatMails" Content="Sync" Margin="5,0, 5, 30"/>
             <Button Grid.Column="1" Grid.Row="1" IsEnabled="{Binding HasReportItems}" Style="{StaticResource Secondary}" Click="ExportReport" Content="Export" Margin="5,0, 5, 30"/>
             <Button Grid.Column="2" Grid.Row="1" IsEnabled="{Binding HasReportItems}" Style="{StaticResource Secondary}" Click="ClearReports" Content="Clear" Margin="5,0, 5, 30"/>
