@@ -76,8 +76,22 @@ namespace HeartBeats.Models
 
         private void GenerateReportItems()
         {
-            _reportItems.Clear();
-            foreach (var mail in Mails)
+            var mailsToBeProcessed = Mails;
+            var lastReportItem = ReportItems.LastOrDefault();
+
+            if (lastReportItem != null)
+            {
+                if (lastReportItem.Date <= Utils.DateTimeConverter.ConvertTimeZone(_filterPreferences.StartDateTime, _filterPreferences.TimeZone, Constants.TimeZone.EST))
+                {
+                    _reportItems.Clear();
+                }
+                else
+                {
+                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) > lastReportItem.Date.Value || (Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) == lastReportItem.Date.Value && !mail.Body.Contains($"Name: {lastReportItem.Name}"))).ToList();
+                }
+            }
+
+            foreach (var mail in mailsToBeProcessed)
             {
                 ProcessMailItem(mail);
             }
