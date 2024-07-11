@@ -97,62 +97,19 @@ namespace HeartBeats.Models
 
             foreach (var mail in mailsToBeProcessed)
             {
-                ProcessMailItem(mail);
+                ProcessMailItem(mail.Body);
             }
 
             OnPropertyChanged(nameof(ReportItems));
         }
 
-        //private void ProcessMailItem(MailDetail mail)
-        //{
-        //    HeartBeatItem reportItem = new HeartBeatItem();
-        //    var mailParts = mail.Body.Replace("\r", string.Empty).Split('\n');
-
-        //    foreach (var part in mailParts)
-        //    {
-        //        if (string.IsNullOrWhiteSpace(part))
-        //        {
-        //            // If currentDetail is not null and contains values, add it to the list
-        //            if (!string.IsNullOrEmpty(reportItem.Name))
-        //            {
-        //                HandleReportItem(reportItem);
-        //            }
-        //            // Start a new detail object
-        //            reportItem = new HeartBeatItem();
-        //        }
-        //        else if (part.StartsWith("Name:"))
-        //        {
-        //            reportItem.Name = part.Substring("Name:".Length).Trim();
-        //        }
-        //        else if (part.StartsWith("Last Run:"))
-        //        {
-        //            if (DateTime.TryParseExact(part.Substring("Last Run:".Length).Trim(), "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
-        //            {
-        //                reportItem.Date = Utils.DateTimeConverter.ConvertTimeZone(date, Constants.TimeZone.UTC, Constants.TimeZone.EST);
-        //            }
-        //        }
-        //        else if (part.StartsWith("Error Message:"))
-        //        {
-        //            reportItem.Message = part.Substring("Error Message:".Length).Trim();
-        //        }
-        //        else if (part.StartsWith("Warning Message:"))
-        //        {
-        //            reportItem.Message = part.Substring("Warning Message:".Length).Trim();
-        //        }
-        //        else if (part.StartsWith("Status:"))
-        //        {
-        //            reportItem.Status = part.Substring("Status:".Length).Trim();
-        //        }
-        //    }
-        //}
-
-        private void ProcessMailItem(MailDetail mail)
+        private void ProcessMailItem(string mailBody)
         {
             // Define the pattern using regex
             string pattern = @"Name:\s*(.*?)\s*Last Run:\s*(.*?)\s*(?:Last Run Output:\s*(.*?)\s*)?Status:\s*(.*?)\s*(?:Error Message:\s*(.*?)(?=\r?\n|<)|Warning Message:\s*(.*?)(?=\r?\n|<)|$)";
 
             // Find all matches in the mail body
-            MatchCollection matches = Regex.Matches(mail.Body, pattern, RegexOptions.Singleline);
+            MatchCollection matches = Regex.Matches(mailBody, pattern, RegexOptions.Singleline);
 
             foreach (Match match in matches)
             {
@@ -174,6 +131,12 @@ namespace HeartBeats.Models
                 }
 
                 HandleReportItem(reportItem);
+
+                // If there are multiple success items in a single success mail, only first item will be matched to regex as there wont be error message or warning message part all thing from status will be extracted to status value. Which means the remaining items will be in this extracted status
+                if (reportItem.Status.Equals(Constants.SuccessMailStatus))
+                {
+                    ProcessMailItem(status);
+                }
             }
         }
 

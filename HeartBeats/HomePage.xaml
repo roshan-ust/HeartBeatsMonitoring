@@ -70,10 +70,10 @@
             <Button Grid.Column="2" Grid.Row="1" IsEnabled="{Binding HasReportItems}" Style="{StaticResource Secondary}" Click="ClearReports" Content="Clear" Margin="5,0, 5, 30"/>
         </Grid>
 
-
-        <StackPanel Grid.Column="1" Grid.RowSpan="3" Margin="15" Visibility="{Binding HasReportItems, Converter={StaticResource BoolToVisConverter}}">
+        <!-- Include visibility condition and ScrollViewer for HeartBeatsReportUI -->
+        <ScrollViewer Grid.Column="1" Grid.RowSpan="3" Margin="15" VerticalScrollBarVisibility="Auto" Visibility="{Binding HasReportItems, Converter={StaticResource BoolToVisConverter}}">
             <local:HeartBeatsReport x:Name="HeartBeatsReportUI"/>
-        </StackPanel>
+        </ScrollViewer>
 
         <Grid Grid.RowSpan="3" Grid.ColumnSpan="2" Background="Black" Opacity="0.6" Visibility="{Binding Loading, Converter={StaticResource BoolToVisConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TextBlock Text="Loading..." Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>

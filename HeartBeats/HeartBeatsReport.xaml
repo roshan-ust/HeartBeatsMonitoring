@@ -13,6 +13,7 @@
     <UserControl.DataContext>
         <local:HeartBeatReport/>
     </UserControl.DataContext>
+
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.RowDefinitions>
@@ -21,6 +22,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <!-- Header Section -->
             <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0.5">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
@@ -35,6 +37,7 @@
                 </Grid>
             </Border>
 
+            <!-- Column Headers Section -->
             <Border Grid.Row="1" BorderBrush="Black" BorderThickness="0.5">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
@@ -58,6 +61,7 @@
                 </Grid>
             </Border>
 
+            <!-- ItemsControl to display report items -->
             <ItemsControl Grid.Row="2" ItemsSource="{Binding ReportItems}">
                 <ItemsControl.Resources>
                     <!-- DataTemplate for each row -->
@@ -90,7 +94,7 @@
                 <!-- StackPanel to handle layout -->
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel />
+                        <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
