@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 
 namespace HeartBeats.Models
@@ -87,7 +88,7 @@ namespace HeartBeats.Models
                 }
                 else
                 {
-                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) > lastReportItem.Date.Value || (Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) == lastReportItem.Date.Value && !mail.Body.Contains($"Name: {lastReportItem.Name}"))).ToList();
+                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) > lastReportItem.Date || (Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) == lastReportItem.Date && !mail.Body.Contains($"Name: {lastReportItem.Name}"))).ToList();
                 }
             }
 
@@ -121,8 +122,8 @@ namespace HeartBeats.Models
                     reportItem.Name = part.Substring("Name:".Length).Trim();
                 }
                 else if (part.StartsWith("Last Run:"))
-                {
-                    if (DateTime.TryParse(part.Substring("Last Run:".Length).Trim(), out DateTime date))
+                {                    
+                    if (DateTime.TryParseExact(part.Substring("Last Run:".Length).Trim(), "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
                     {
                         reportItem.Date = Utils.DateTimeConverter.ConvertTimeZone(date, Constants.TimeZone.UTC, Constants.TimeZone.EST);
                     }
