@@ -1,9 +1,12 @@
 ﻿using HeartBeats.Utils;
+using Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace HeartBeats.Models
 {
@@ -100,46 +103,77 @@ namespace HeartBeats.Models
             OnPropertyChanged(nameof(ReportItems));
         }
 
+        //private void ProcessMailItem(MailDetail mail)
+        //{
+        //    HeartBeatItem reportItem = new HeartBeatItem();
+        //    var mailParts = mail.Body.Replace("\r", string.Empty).Split('\n');
+
+        //    foreach (var part in mailParts)
+        //    {
+        //        if (string.IsNullOrWhiteSpace(part))
+        //        {
+        //            // If currentDetail is not null and contains values, add it to the list
+        //            if (!string.IsNullOrEmpty(reportItem.Name))
+        //            {
+        //                HandleReportItem(reportItem);
+        //            }
+        //            // Start a new detail object
+        //            reportItem = new HeartBeatItem();
+        //        }
+        //        else if (part.StartsWith("Name:"))
+        //        {
+        //            reportItem.Name = part.Substring("Name:".Length).Trim();
+        //        }
+        //        else if (part.StartsWith("Last Run:"))
+        //        {
+        //            if (DateTime.TryParseExact(part.Substring("Last Run:".Length).Trim(), "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
+        //            {
+        //                reportItem.Date = Utils.DateTimeConverter.ConvertTimeZone(date, Constants.TimeZone.UTC, Constants.TimeZone.EST);
+        //            }
+        //        }
+        //        else if (part.StartsWith("Error Message:"))
+        //        {
+        //            reportItem.Message = part.Substring("Error Message:".Length).Trim();
+        //        }
+        //        else if (part.StartsWith("Warning Message:"))
+        //        {
+        //            reportItem.Message = part.Substring("Warning Message:".Length).Trim();
+        //        }
+        //        else if (part.StartsWith("Status:"))
+        //        {
+        //            reportItem.Status = part.Substring("Status:".Length).Trim();
+        //        }
+        //    }
+        //}
+
         private void ProcessMailItem(MailDetail mail)
         {
-            HeartBeatItem reportItem = new HeartBeatItem();
-            var mailParts = mail.Body.Replace("\r", string.Empty).Split('\n');
+            // Define the pattern using regex
+            string pattern = @"Name:\s*(.*?)\s*Last Run:\s*(.*?)\s*(?:Last Run Output:\s*(.*?)\s*)?Status:\s*(.*?)\s*(?:Error Message:\s*(.*?)(?=\r?\n|<)|Warning Message:\s*(.*?)(?=\r?\n|<)|$)";
 
-            foreach (var part in mailParts)
+            // Find all matches in the mail body
+            MatchCollection matches = Regex.Matches(mail.Body, pattern, RegexOptions.Singleline);
+
+            foreach (Match match in matches)
             {
-                if (string.IsNullOrWhiteSpace(part))
+                string name = match.Groups[1].Value.Trim();
+                string lastRun = match.Groups[2].Value.Trim();
+                string status = match.Groups[4].Value.Trim();
+                string message = match.Groups[5].Success ? match.Groups[5].Value.Trim() : match.Groups[6].Success ? match.Groups[6].Value.Trim() : string.Empty;
+
+                HeartBeatItem reportItem = new HeartBeatItem
                 {
-                    // If currentDetail is not null and contains values, add it to the list
-                    if (!string.IsNullOrEmpty(reportItem.Name))
-                    {
-                        HandleReportItem(reportItem);
-                    }
-                    // Start a new detail object
-                    reportItem = new HeartBeatItem();
-                }
-                else if (part.StartsWith("Name:"))
+                    Name = name,
+                    Status = string.IsNullOrEmpty(message) ? Constants.SuccessMailStatus : status,
+                    Message = message
+                };
+
+                if (DateTime.TryParseExact(lastRun, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
                 {
-                    reportItem.Name = part.Substring("Name:".Length).Trim();
+                    reportItem.Date = Utils.DateTimeConverter.ConvertTimeZone(date, Constants.TimeZone.UTC, Constants.TimeZone.EST);
                 }
-                else if (part.StartsWith("Last Run:"))
-                {                    
-                    if (DateTime.TryParseExact(part.Substring("Last Run:".Length).Trim(), "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
-                    {
-                        reportItem.Date = Utils.DateTimeConverter.ConvertTimeZone(date, Constants.TimeZone.UTC, Constants.TimeZone.EST);
-                    }
-                }
-                else if (part.StartsWith("Error Message:"))
-                {
-                    reportItem.Message = part.Substring("Error Message:".Length).Trim();
-                }
-                else if (part.StartsWith("Warning Message:"))
-                {
-                    reportItem.Message = part.Substring("Warning Message:".Length).Trim();
-                }
-                else if (part.StartsWith("Status:"))
-                {
-                    reportItem.Status = part.Substring("Status:".Length).Trim();
-                }
+
+                HandleReportItem(reportItem);
             }
         }
 
@@ -188,6 +222,23 @@ namespace HeartBeats.Models
             else
             {
                 _reportItems.Add(newItem);
+            }
+        }
+
+        private void WriteLog(string logMessage)
+        {
+            try
+            {
+                // Append the log message to the file
+                using (StreamWriter writer = new StreamWriter(@"C:\Users\153064\Wolseley\Log.txt", true))
+                {
+                    writer.WriteLine(logMessage);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine("Error writing to log file: " + ex.Message);
             }
         }
     }
