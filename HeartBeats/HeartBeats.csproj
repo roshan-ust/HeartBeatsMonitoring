@@ -27,7 +27,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>23</ApplicationRevision>
+    <ApplicationRevision>47</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -164,6 +164,7 @@
     <Compile Include="Utils\DateTimeConverter.cs" />
     <Compile Include="Utils\DateTimeDateTimeDetailConverter.cs" />
     <Compile Include="Utils\IntToStringConverter.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="Utils\WarningMailStatusToBooleanConverter.cs" />
     <Compile Include="Utils\BooleanConverter.cs" />
     <Compile Include="Utils\BooleanNegationConverter.cs" />

@@ -80,22 +80,9 @@ namespace HeartBeats.Models
 
         private void GenerateReportItems()
         {
-            var mailsToBeProcessed = Mails;
-            var lastReportItem = ReportItems.LastOrDefault();
+            _reportItems.Clear();
 
-            if (lastReportItem != null)
-            {
-                if (lastReportItem.Date <= Utils.DateTimeConverter.ConvertTimeZone(_filterPreferences.StartDateTime, _filterPreferences.TimeZone, Constants.TimeZone.EST))
-                {
-                    _reportItems.Clear();
-                }
-                else
-                {
-                    mailsToBeProcessed = mailsToBeProcessed.Where(mail => Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) > lastReportItem.Date || (Utils.DateTimeConverter.ConvertTimeZone(mail.ReceivedTime, Constants.TimeZone.UTC, Constants.TimeZone.EST) == lastReportItem.Date && !mail.Body.Contains($"Name: {lastReportItem.Name}"))).ToList();
-                }
-            }
-
-            foreach (var mail in mailsToBeProcessed)
+            foreach (var mail in Mails)
             {
                 ProcessMailItem(mail.Body);
             }
@@ -185,23 +172,6 @@ namespace HeartBeats.Models
             else
             {
                 _reportItems.Add(newItem);
-            }
-        }
-
-        private void WriteLog(string logMessage)
-        {
-            try
-            {
-                // Append the log message to the file
-                using (StreamWriter writer = new StreamWriter(@"C:\Users\153064\Wolseley\Log.txt", true))
-                {
-                    writer.WriteLine(logMessage);
-                }
-            }
-            catch (System.Exception ex)
-            {
-                // Handle any exceptions
-                Console.WriteLine("Error writing to log file: " + ex.Message);
             }
         }
     }

@@ -138,7 +138,11 @@ namespace HeartBeats
         private void FetchHeartBeatMails(object sender, RoutedEventArgs args)
         {
 
-            if (!_syncPreferences.Manual)
+            if (_syncPreferences.Manual)
+            {
+                SyncControls.IntervalReached -= IntervalReachedEvent;
+            }
+            else
             {
                 SyncControls.IntervalReached += IntervalReachedEvent;
             }
@@ -148,6 +152,7 @@ namespace HeartBeats
 
         private async void FetchHeartBeatMails()
         {
+            SyncControls.StopTimer();
             var utcEndDateTime = Utils.DateTimeConverter.ConvertTimeZone(_filterPreferences.EndDateTime, _filterPreferences.TimeZone);
             if (utcEndDateTime < DateTime.UtcNow)
             {

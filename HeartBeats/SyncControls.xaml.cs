@@ -51,6 +51,11 @@ namespace HeartBeats
             }
         }
 
+        public void StopTimer()
+        {
+            CountdownTimer.StopTimer();
+        }
+
         private void SyncOptionChecked(object sender, RoutedEventArgs args)
         {
             RadioButton radio = sender as RadioButton;
