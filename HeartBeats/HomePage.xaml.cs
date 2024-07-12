@@ -70,6 +70,11 @@ namespace HeartBeats
                 {
                     NotifyCriticalErrors();
                 }
+
+                if (!_syncPreferences.Manual)
+                {
+                    SyncControls.StartTimer();
+                }
             }
         }
         private void Expander_Expanded(object sender, RoutedEventArgs e)
@@ -161,10 +166,6 @@ namespace HeartBeats
             }
             ShowHideLoader(true);
             _heartBeatReport.Mails = await Task.Run(() => GetHeartBeatMails());
-            if (!_syncPreferences.Manual)
-            {
-                SyncControls.StartTimer();
-            }
         }
 
         private async void ExportReport(object sender, RoutedEventArgs args)
