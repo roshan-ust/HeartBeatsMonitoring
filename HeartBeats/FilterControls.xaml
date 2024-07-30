@@ -23,8 +23,8 @@
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="TimeZone: " Margin="5" FontSize="12" VerticalAlignment="Center"/>
             <ComboBox SelectedValue="{Binding TimeZone}" SelectedValuePath="Content" Margin="5" Height="30" Padding="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                <ComboBoxItem Content="EST"/>
-                <ComboBoxItem Content="IST"/>
+                <ComboBoxItem Content="Eastern Standard Time"/>
+                <ComboBoxItem Content="India Standard Time"/>
                 <ComboBoxItem Content="UTC"/>
             </ComboBox>
         </StackPanel>

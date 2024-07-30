@@ -46,6 +46,19 @@ namespace HeartBeats
                 // Attempt to logon with provided credentials
                 //outlookNamespace.Logon(email, password);
                 user.Name = outlookNamespace.CurrentUser.Name;
+                Outlook.AddressEntry addressEntry = outlookNamespace.CurrentUser.AddressEntry;
+
+                // Retrieve the SMTP address from the AddressEntry
+                if (addressEntry != null && addressEntry.GetExchangeUser() != null)
+                {
+                    var exchangeUser = addressEntry.GetExchangeUser();
+                    user.Email = exchangeUser.PrimarySmtpAddress;
+                }
+                else
+                {
+                    user.Email = addressEntry.Address;
+                }
+
                 user.DefaultStore = outlookNamespace.DefaultStore;
                 homePage = new HomePage(user);
                 MainGrid.Children.Clear();

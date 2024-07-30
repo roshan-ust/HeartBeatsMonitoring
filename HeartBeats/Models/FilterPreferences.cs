@@ -6,7 +6,7 @@ namespace HeartBeats.Models
 {
     public class FilterPreferences : INotifyPropertyChanged
     {
-        private Constants.TimeZone _timeZone = Constants.TimeZone.EST;
+        private string _timeZone = Constants.TimeZone.EST;
         private DateTime _startDateTime = Utils.DateTimeConverter.ConvertTimeZone(DateTime.UtcNow, Constants.TimeZone.UTC, Constants.TimeZone.EST).Date;
         private DateTime _endDateTime = Utils.DateTimeConverter.ConvertTimeZone(DateTime.UtcNow, Constants.TimeZone.UTC, Constants.TimeZone.EST);
 
@@ -40,7 +40,7 @@ namespace HeartBeats.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public Constants.TimeZone TimeZone {
+        public string TimeZone {
             get => _timeZone;
             set
             {
@@ -80,7 +80,7 @@ namespace HeartBeats.Models
             }
         }
 
-        private void UpdateSelectedTimeByZone(Constants.TimeZone currentZone, Constants.TimeZone newZone)
+        private void UpdateSelectedTimeByZone(string currentZone, string newZone)
         {
             StartDateTime = Utils.DateTimeConverter.ConvertTimeZone(StartDateTime, currentZone, newZone);
             var currDateTime = Utils.DateTimeConverter.ConvertTimeZone(DateTime.UtcNow, Constants.TimeZone.UTC, newZone);

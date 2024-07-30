@@ -27,7 +27,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>48</ApplicationRevision>
+    <ApplicationRevision>59</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -130,6 +130,9 @@
     <Compile Include="FilterControls.xaml.cs">
       <DependentUpon>FilterControls.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EmailControls.xaml.cs">
+      <DependentUpon>EmailControls.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FolderControls.xaml.cs">
       <DependentUpon>FolderControls.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,7 @@
     </Compile>
     <Compile Include="Models\CountdownTimer.cs" />
     <Compile Include="Models\DateTimeDetail.cs" />
+    <Compile Include="Models\EmailPreferences.cs" />
     <Compile Include="Models\ExportControls.cs" />
     <Compile Include="Models\FilterPreferences.cs" />
     <Compile Include="Models\NotificationItem.cs" />
@@ -163,6 +167,7 @@
     <Compile Include="Utils\AppSettingsReader.cs" />
     <Compile Include="Utils\DateTimeConverter.cs" />
     <Compile Include="Utils\DateTimeDateTimeDetailConverter.cs" />
+    <Compile Include="Utils\EmailUtils.cs" />
     <Compile Include="Utils\IntToStringConverter.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Utils\WarningMailStatusToBooleanConverter.cs" />
@@ -195,6 +200,10 @@
     <Page Include="FilterControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EmailControls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="FolderControls.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -52,6 +52,9 @@
             <Expander x:Name="Expander5" Expanded="Expander_Expanded" Header="Export Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
                 <local:ExportPreferences x:Name="ExportControls" Margin="0, 5"/>
             </Expander>
+            <Expander x:Name="Expander6" Expanded="Expander_Expanded" Header="Email Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
+                <local:EmailControls x:Name="EmailControls" Margin="0, 5"/>
+            </Expander>
         </StackPanel>
 
         <Grid Grid.Row="2">

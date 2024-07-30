@@ -24,93 +24,47 @@ namespace HeartBeats.Utils
             return new DateTime(dateTimeDetail.SelectedDate.Value.Year, dateTimeDetail.SelectedDate.Value.Month, dateTimeDetail.SelectedDate.Value.Day, hour, dateTimeDetail.SelectedMinute, dateTimeDetail.SelectedSecond);
         }
 
-        public static DateTime ConvertTimeZone(DateTime dateTime, Constants.TimeZone sourceTimeZone = Constants.TimeZone.UTC, Constants.TimeZone destinationTimeZone = Constants.TimeZone.UTC)
+        public static DateTime ConvertTimeZone(DateTime dateTime, string sourceTimeZone = Constants.TimeZone.UTC, string destinationTimeZone = Constants.TimeZone.UTC)
         {
             return ConvertFromUTC(ConvertToUTC(dateTime, sourceTimeZone), destinationTimeZone);
         }
 
-        private static DateTime ConvertToUTC(DateTime dateTime, Constants.TimeZone timeZone = Constants.TimeZone.UTC)
+        private static DateTime ConvertToUTC(DateTime dateTime, string timeZoneId = Constants.TimeZone.UTC)
         {
-            switch (timeZone)
-            {
-                case Constants.TimeZone.EST:
-                    return ConvertESTtoUTC(dateTime);
-                case Constants.TimeZone.IST:
-                    return ConvertISTtoUTC(dateTime);
-                default:
-                    return dateTime;
-            }
-        }
-
-        private static DateTime ConvertFromUTC(DateTime dateTime, Constants.TimeZone timeZone = Constants.TimeZone.UTC)
-        {
-            switch (timeZone)
-            {
-                case Constants.TimeZone.EST:
-                    return ConvertUTCtoEST(dateTime);
-                case Constants.TimeZone.IST:
-                    return ConvertUTCtoIST(dateTime);
-                default:
-                    return dateTime;
-            }
-        }
-
-        private static DateTime ConvertISTtoUTC(DateTime dateTimeIST)
-        {
-            // Define the EST time zone
-            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-
-            return TimeZoneInfo.ConvertTimeToUtc(dateTimeIST, istTimeZone);
-        }
-
-        private static DateTime ConvertUTCtoIST(DateTime dateTimeUTC)
-        {
-            // Define the EST time zone
-            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-
-            return TimeZoneInfo.ConvertTimeFromUtc(dateTimeUTC, istTimeZone);
-        }
-
-        private static DateTime ConvertESTtoUTC(DateTime dateTimeEST)
-        {
-            // Define the EST time zone
-            TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
 
             // If DST should not be considered, adjust the time manually
-            if (!AppSettingsReader.ReadValue<bool>("DayLights"))
+            if (timeZone.Equals("Eastern Standard Time") && !AppSettingsReader.ReadValue<bool>("DayLights"))
             {
                 // Check if the date falls within DST period
-                if (estTimeZone.IsDaylightSavingTime(dateTimeEST))
+                if (timeZone.IsDaylightSavingTime(dateTime))
                 {
                     // Add one hour to adjust for DST
-                    dateTimeEST = dateTimeEST.AddHours(1);
+                    dateTime = dateTime.AddHours(1);
                 }
             }
 
-            // Convert the EST/EDT time to UTC
-            return TimeZoneInfo.ConvertTimeToUtc(dateTimeEST, estTimeZone);
+            return TimeZoneInfo.ConvertTimeToUtc(dateTime, timeZone);
         }
 
-        private static DateTime ConvertUTCtoEST(DateTime dateTimeUTC)
+        private static DateTime ConvertFromUTC(DateTime dateTime, string timeZoneId = Constants.TimeZone.UTC)
         {
-            // Define the EST time zone
-            TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
 
-            // Convert the UTC time to EST (considering DST)
-            DateTime estDateTime = TimeZoneInfo.ConvertTimeFromUtc(dateTimeUTC, estTimeZone);
+            DateTime convertedTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, timeZone);
 
             // If DST should not be considered, adjust the time manually
-            if (!AppSettingsReader.ReadValue<bool>("DayLights"))
+            if (timeZone.Equals("Eastern Standard Time") && !AppSettingsReader.ReadValue<bool>("DayLights"))
             {
                 // Check if the date falls within DST period
-                if (estTimeZone.IsDaylightSavingTime(estDateTime))
+                if (timeZone.IsDaylightSavingTime(convertedTime))
                 {
-                    // Subtract one hour to adjust for DST
-                    estDateTime = estDateTime.AddHours(-1);
+                    // Add one hour to adjust for DST
+                    convertedTime = convertedTime.AddHours(-1);
                 }
             }
 
-            return estDateTime;
+            return convertedTime;
         }
 
         private static int ConvertTo24Hour(DateTimeDetail dateTimeDetail)

@@ -24,7 +24,7 @@ namespace HeartBeats
             Icon = SystemIcons.Warning, // You can set your own icon here
             Visible = true
         };
-        private DispatcherTimer _timer;
+
         private HeartBeatReport _heartBeatReport = new HeartBeatReport();
         private BasicProps _user = new BasicProps();
         private FolderPreferences _folderPreferences = new FolderPreferences();
@@ -32,6 +32,7 @@ namespace HeartBeats
         private SyncPreferences _syncPreferences = new SyncPreferences();
         private FilterPreferences _filterPreferences = new FilterPreferences();
         private ExportControls _exportControls = new ExportControls();
+        private EmailPreferences _emailControls = new EmailPreferences();
 
         public HomePage(BasicProps user)
         {
@@ -47,6 +48,8 @@ namespace HeartBeats
             _filterPreferences = _heartBeatReport.FilterPreferences;
             FilterControls.UpdateDataContext(_filterPreferences);
             ExportControls.UpdateDataContext(_exportControls);
+            _emailControls.Recipients = $"{_user.Email}; {_emailControls.Recipients}"; 
+            EmailControls.UpdateDataContext(_emailControls);
         }
 
         private void ShowHideLoader(bool show)
@@ -127,6 +130,26 @@ namespace HeartBeats
             {
                 CriticalErrorWindow notificationWindow = new CriticalErrorWindow(notifications);
                 notificationWindow.Show();
+                if (_emailControls.SendEmailNotificationOnError && !string.IsNullOrWhiteSpace(_emailControls.Recipients))
+                {
+                    string notificationsHtml = "";
+                    foreach (NotificationItem notification in notifications)
+                    {
+                        notificationsHtml += $"<li>{notification.Name}: {notification.Count} time(s)</li>";
+                    }
+
+                    string mailBody = $@"
+                                        <html>
+                                        <body>
+                                            <p style='font-weight:700;margin-bottom:20px;'>The following errors have occurred an unusually high number of times.</p>
+                                            <ul>
+                                                {notificationsHtml}
+                                            </ul>
+                                        </body>
+                                        </html>";
+
+                    EmailUtils.SendEmail(_emailControls.Recipients, "Heartbeat Critical Error Occurrence", mailBody);
+                }
             }
         }
 

@@ -20,11 +20,11 @@ namespace HeartBeats.Utils
             ConsiderAsError
         }
 
-        public enum TimeZone
+        public static class TimeZone
         {
-            EST,
-            UTC,
-            IST
+            public const string EST = "Eastern Standard Time";
+            public const string UTC = "UTC";
+            public const string IST = "India Standard Time";
         }
 
         static Constants()
