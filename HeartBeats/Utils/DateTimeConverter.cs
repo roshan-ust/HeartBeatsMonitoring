@@ -34,7 +34,7 @@ namespace HeartBeats.Utils
             TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
 
             // If DST should not be considered, adjust the time manually
-            if (timeZone.Equals("Eastern Standard Time") && !AppSettingsReader.ReadValue<bool>("DayLights"))
+            if (timeZoneId.Equals(Constants.TimeZone.EST) && !AppSettingsReader.ReadValue<bool>("DayLights"))
             {
                 // Check if the date falls within DST period
                 if (timeZone.IsDaylightSavingTime(dateTime))
@@ -54,7 +54,7 @@ namespace HeartBeats.Utils
             DateTime convertedTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, timeZone);
 
             // If DST should not be considered, adjust the time manually
-            if (timeZone.Equals("Eastern Standard Time") && !AppSettingsReader.ReadValue<bool>("DayLights"))
+            if (timeZoneId.Equals(Constants.TimeZone.EST) && !AppSettingsReader.ReadValue<bool>("DayLights"))
             {
                 // Check if the date falls within DST period
                 if (timeZone.IsDaylightSavingTime(convertedTime))
