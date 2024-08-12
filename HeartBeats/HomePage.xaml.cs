@@ -48,8 +48,9 @@ namespace HeartBeats
             _filterPreferences = _heartBeatReport.FilterPreferences;
             FilterControls.UpdateDataContext(_filterPreferences);
             ExportControls.UpdateDataContext(_exportControls);
-            _emailControls.Recipients = $"{_user.Email}; {_emailControls.Recipients}"; 
+            _emailControls.Recipients = $"{_user.Email}; {_emailControls.Recipients}";
             EmailControls.UpdateDataContext(_emailControls);
+            MenuScrollViewer.MaxHeight = SystemParameters.PrimaryScreenHeight - 250;
         }
 
         private void ShowHideLoader(bool show)
@@ -91,14 +92,26 @@ namespace HeartBeats
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
-
-                if (child is Expander expander && expander != expandedExpander)
+                if (child is Expander expander && expander != expandedExpander && expander.Name != "Expander1")
                 {
                     expander.IsExpanded = false;
                 }
                 else
                 {
                     CollapseOtherExpanders(child, expandedExpander);
+                }
+            }
+        }
+        private void Expander_Collapsed(object sender, RoutedEventArgs e)
+        {
+            // Check the name of the expander that was collapsed
+            if (sender is Expander collapsedExpander)
+            {
+                // Prevent collapsing of the first expander
+                if (collapsedExpander.Name == "Expander1")
+                {
+                    // Re-expand the first expander if it was collapsed
+                    collapsedExpander.IsExpanded = true;
                 }
             }
         }

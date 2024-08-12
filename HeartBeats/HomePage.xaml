@@ -30,32 +30,34 @@
         <Border Grid.Row="1" Grid.Column="1" Background="LightGray"/>
         <Border Grid.Row="2" Grid.Column="1" Background="LightGray"/>
         <!-- Landing page UI -->
-        <StackPanel>
-            <TextBlock FontSize="18" Margin="5, 5, 5, 10">
+        <ScrollViewer x:Name="MenuScrollViewer" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock FontSize="18" Margin="5, 5, 5, 10">
                 <Run Text="Welcome, "/>
                 <Run Text="{Binding Name}" FontWeight="Bold"/>
-            </TextBlock>
-            <Expander x:Name="Expander1" Expanded="Expander_Expanded" Header="Folder Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="200">
-                    <local:FolderControls x:Name="FolderControls" Margin="0, 5"/>
-                </ScrollViewer>
-            </Expander>
-            <Expander x:Name="Expander2" Expanded="Expander_Expanded" Header="Report Item Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
-                <local:ReportItemControls x:Name="ReportItemControls" Margin="0, 5"/>
-            </Expander>
-            <Expander x:Name="Expander3" Expanded="Expander_Expanded" Header="Sync Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
-                <local:SyncControls x:Name="SyncControls" Margin="0, 5"/>
-            </Expander>
-            <Expander x:Name="Expander4" Expanded="Expander_Expanded" Header="Filter Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
-                <local:FilterControls x:Name="FilterControls" Margin="0, 5"/>
-            </Expander>
-            <Expander x:Name="Expander5" Expanded="Expander_Expanded" Header="Export Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
-                <local:ExportPreferences x:Name="ExportControls" Margin="0, 5"/>
-            </Expander>
-            <Expander x:Name="Expander6" Expanded="Expander_Expanded" Header="Email Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
-                <local:EmailControls x:Name="EmailControls" Margin="0, 5"/>
-            </Expander>
-        </StackPanel>
+                </TextBlock>
+                <Expander x:Name="Expander1" IsExpanded="True" Expanded="Expander_Expanded" Collapsed="Expander_Collapsed"  Header="Sync Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
+                    <local:SyncControls x:Name="SyncControls" Margin="0, 5"/>
+                </Expander>
+                <Expander x:Name="Expander2" Expanded="Expander_Expanded" Header="Folder Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="200">
+                        <local:FolderControls x:Name="FolderControls" Margin="0, 5"/>
+                    </ScrollViewer>
+                </Expander>
+                <Expander x:Name="Expander3" Expanded="Expander_Expanded" Header="Report Item Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
+                    <local:ReportItemControls x:Name="ReportItemControls" Margin="0, 5"/>
+                </Expander>
+                <Expander x:Name="Expander4" Expanded="Expander_Expanded" Header="Filter Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
+                    <local:FilterControls x:Name="FilterControls" Margin="0, 5"/>
+                </Expander>
+                <Expander x:Name="Expander5" Expanded="Expander_Expanded" Header="Export Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
+                    <local:ExportPreferences x:Name="ExportControls" Margin="0, 5"/>
+                </Expander>
+                <Expander x:Name="Expander6" Expanded="Expander_Expanded" Header="Email Preferences" Padding="5, 10, 5, 10" Margin="0,0,2,0" Cursor="Hand" BorderBrush="#7D7D7D">
+                    <local:EmailControls x:Name="EmailControls" Margin="0, 5"/>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
 
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
