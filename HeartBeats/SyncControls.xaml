@@ -18,17 +18,19 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.ColumnSpan="2" Text="Error monitoring will be performed along with automatic sync at provided intervals. For manual sync, monitoring is performed only on sync." Foreground="Red" FontSize="10" FontWeight="SemiBold" Margin="5, 10" TextWrapping="Wrap"/>
-        <RadioButton Grid.Row="1" x:Name="Manual" GroupName="SyncOption" Content="Manual" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Manual}" Checked="SyncOptionChecked"/>
-        <RadioButton Grid.Row="1" Grid.Column="1" x:Name="Automatic" GroupName="SyncOption" Content="Automatic" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Manual, Converter={StaticResource BooleanNegationConverter}}" Checked="SyncOptionChecked"/>
-        <ComboBox Grid.Row="2" Margin="5" ItemsSource="{Binding Intervals}"
+        <TextBlock Grid.ColumnSpan="2" Text="Section cannot be collapsed if Automatic Sync is selected." Foreground="Orange" FontSize="10" FontWeight="SemiBold" Margin="5, 10" FontStyle="Italic" TextWrapping="Wrap" Visibility="{Binding Manual, Converter={StaticResource InvertedBooleanVisibility}}"/>
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Error monitoring will be performed along with automatic sync at provided intervals. For manual sync, monitoring is performed only on sync." Foreground="Red" FontSize="10" FontWeight="SemiBold" Margin="5, 10" TextWrapping="Wrap"/>
+        <RadioButton Grid.Row="2" x:Name="Manual" GroupName="SyncOption" Content="Manual" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Manual}" Checked="SyncOptionChecked"/>
+        <RadioButton Grid.Row="2" Grid.Column="1" x:Name="Automatic" GroupName="SyncOption" Content="Automatic" Margin="5" Padding="5" Cursor="Hand" VerticalContentAlignment="Center" IsChecked="{Binding Manual, Converter={StaticResource BooleanNegationConverter}}" Checked="SyncOptionChecked"/>
+        <ComboBox Grid.Row="3" Margin="5" ItemsSource="{Binding Intervals}"
           SelectedValue="{Binding Interval}" Visibility="{Binding Manual, Converter={StaticResource InvertedBooleanVisibility}}" SelectionChanged="IntervalSelectionChanged"/>
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Visibility="{Binding Manual, Converter={StaticResource InvertedBooleanVisibility}}">
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Visibility="{Binding Manual, Converter={StaticResource InvertedBooleanVisibility}}">
             <controls:CountdownTimer x:Name="CountdownTimer"/>
         </StackPanel>
     </Grid>
